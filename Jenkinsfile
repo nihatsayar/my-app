@@ -17,6 +17,7 @@ pipeline {
         }
         stage('Test') {
             steps {
+                scripts {
                 sh 'mvn test -f my-app'
             }
         }
