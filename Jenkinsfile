@@ -1,9 +1,6 @@
 pipeline {
     agent any
-    tools {
-        maven 'maven3'
-    }
-    stages {
+     stages {
         stage('clone repo an ') {
             steps {
                 sh 'rm -rf my-app'
