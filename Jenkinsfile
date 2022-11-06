@@ -19,8 +19,8 @@ pipeline {
             steps {
                 scripts {
                 sh 'mvn test -f my-app'
+                }
             }
-        }
         }
         stage('Upload War To Nexus') {
             steps {
