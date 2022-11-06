@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    tools {
+        maven 'maven3'
+    }
     stages {
         stage('clone repo an ') {
             steps {
@@ -9,14 +11,33 @@ pipeline {
                 sh 'mvn clean -f my-app'
             }
         }
+        stage('Build') {
+            steps {
+                sh script 'mvn clean package'
+            }
+        }
         stage('Test') {
             steps {
                 sh 'mvn test -f my-app'
             }
         }
-        stage('Deploy') {
+        stage('Upload War To Nexus') {
             steps {
-                sh ' mvn package -f my-app'
+                nexusArtifactUploader artifacts: [
+                    [
+                        artifactId: 'my-app',
+                        classifier: '',
+                        file: 'target/my-app-1.0-SNAPSHOT.war', 
+                        type: 'war'
+                    ]
+               ],
+               credentialsId: 'NEXUS_ID',
+               groupId: 'com.mycompany.app', 
+               nexusUrl: '192.168.116.3:8081',
+               nexusVersion: 'nexus2',
+               protocol:'http',
+               repository: 'maven-repository',
+               version: '1.0-SNAPSHOT'
             }
         }
     }
